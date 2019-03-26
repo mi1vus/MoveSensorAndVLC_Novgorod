@@ -1,0 +1,3 @@
+!RoomSensor && !WaitFree && SelectVideo
+RoomEmptyTimerTick
+RoomEmptyTimerTick - WaitFree && SelectVideo
