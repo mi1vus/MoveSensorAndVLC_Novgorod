@@ -28,7 +28,13 @@ namespace Turn
         // Таймер
         DispatcherTimer SensorUpdateTimer = new DispatcherTimer();
         // Таймер
+        int WaitTime = 60;
         DispatcherTimer RoomEmptyTimer = new DispatcherTimer();
+        // Таймер
+        int ExitTime = 20;
+        DispatcherTimer ExitTimer = new DispatcherTimer();
+
+        bool DebugMode = false;
 
         // Порт
         string buff = "";
@@ -63,6 +69,14 @@ namespace Turn
                     .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1];
                 com = new SerialPort(port, 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One);
 
+                WaitTime = int.Parse(pars.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).First(t => t.StartsWith("wait"))
+                    .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+                ExitTime = int.Parse(pars.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).First(t => t.StartsWith("down"))
+                    .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+
+                DebugMode = bool.Parse(pars.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).First(t => t.StartsWith("debug"))
+                    .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+
                 var list = File.ReadAllText(@"D:\Projects\C#_Proj\Нижний - Проект Очередь\Sensor\list.txt");
                 var lines = list.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines)
@@ -79,16 +93,21 @@ namespace Turn
                 com.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
 
                 // Задаем интервал таймеру
-                SensorUpdateTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+                SensorUpdateTimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
                 // Подписываемся на тики таймера
                 SensorUpdateTimer.Tick += new EventHandler(SensorUpdateTimerTick);
                 // Стартуем таймер
                 SensorUpdateTimer.Start();
 
                 // Задаем интервал таймеру
-                RoomEmptyTimer.Interval = new TimeSpan(0, 0, 0, 30, 0);
+                RoomEmptyTimer.Interval = new TimeSpan(0, 0, 0, WaitTime, 0);
                 // Подписываемся на тики таймера
                 RoomEmptyTimer.Tick += new EventHandler(RoomEmptyTimerTick);
+
+                // Задаем интервал таймеру
+                ExitTimer.Interval = new TimeSpan(0, 0, 0, ExitTime, 0);
+                // Подписываемся на тики таймера
+                ExitTimer.Tick += new EventHandler(RoomEmptyTimerTick);
 
                 com.Open();
             }
@@ -139,14 +158,13 @@ namespace Turn
                 buff = pairs[pairs.Length - 1];
             }
 
-
-            if (FlatSensor && SelectVideo  && !WaitPeople && !WaitFree)
+            if (FlatSensor && SelectVideo  && !WaitPeople)
             {
                 WaitPeople = true;
                 Logo("FlatSensor && SelectVideo  && !WaitPeople && !WaitFree");
             }
 
-            if (RoomSensor && SelectVideo && WaitPeople && !WaitFree && !string.IsNullOrWhiteSpace(SelectedVideo))
+            if (RoomSensor && SelectVideo && WaitPeople && !PlayingVideo && !string.IsNullOrWhiteSpace(SelectedVideo))
             {
                 SubWindow.PlayVideo(SelectedVideo);
                 PlayingVideo = true;
@@ -163,10 +181,21 @@ namespace Turn
                 RoomEmptyTimer.Stop();
                 RoomEmptyTimer = new DispatcherTimer();
                 // Задаем интервал таймеру
-                RoomEmptyTimer.Interval = new TimeSpan(0, 0, 0, 30, 0);
+                RoomEmptyTimer.Interval = new TimeSpan(0, 0, 0, WaitTime, 0);
                 // Подписываемся на тики таймера
                 RoomEmptyTimer.Tick += new EventHandler(RoomEmptyTimerTick);
                 Logo("RoomSensor && WaitFree && SelectVideo && PlayingVideo");
+            }
+
+            if (RoomSensor && SelectVideo && PlayingVideo)
+            {
+                ExitTimer.Stop();
+                ExitTimer = new DispatcherTimer();
+                // Задаем интервал таймеру
+                ExitTimer.Interval = new TimeSpan(0, 0, 0, ExitTime, 0);
+                // Подписываемся на тики таймера
+                ExitTimer.Tick += new EventHandler(RoomEmptyTimerTick);
+                Logo("RoomSensor && SelectVideo && PlayingVideo");
             }
 
             if (!RoomSensor && !WaitFree && SelectVideo)
@@ -183,8 +212,14 @@ namespace Turn
                 Logo("FlatSensor && SelectVideo && PlayingVideo && !WaitPeople && !WaitFree");
             }
 
-            label.Content = (FlatSensor ? "1" : "0") + " " + (RoomSensor ? "1" : "0");
+            if (FlatSensor && SelectVideo && PlayingVideo)
+            {
+                ExitTimer.Start();
+                Logo("FlatSensor && SelectVideo && PlayingVideo");
+            }
 
+            label.Content = (FlatSensor ? "1" : "0") + " " + (RoomSensor ? "1" : "0");
+            SubWindow.label.Content = (FlatSensor ? "1" : "0") + " " + (RoomSensor ? "1" : "0");
             //// Чето посылаем
             //port.Write("#10\r");
         }
@@ -192,13 +227,13 @@ namespace Turn
         private void RoomEmptyTimerTick(object sender, EventArgs e)
         {
             Logo("RoomEmptyTimerTick");
-            if (WaitFree && SelectVideo)
+            if (SelectVideo)
             {
                 WaitFree = false;
                 RoomEmptyTimer.Stop();
                 RoomEmptyTimer = new DispatcherTimer();
                 // Задаем интервал таймеру
-                RoomEmptyTimer.Interval = new TimeSpan(0, 0, 0, 30, 0);
+                RoomEmptyTimer.Interval = new TimeSpan(0, 0, 0, WaitTime, 0);
                 // Подписываемся на тики таймера
                 RoomEmptyTimer.Tick += new EventHandler(RoomEmptyTimerTick);
 
@@ -293,12 +328,15 @@ namespace Turn
             NotEmptyMessage.Margin = new Thickness(margin);
             NotEmptyMessage.Content = new TextBlock() { Text = "Занято, ожидайте!", TextWrapping = TextWrapping.Wrap, TextAlignment = TextAlignment.Center };
             NotEmptyMessage.Visibility = Visibility.Hidden;
+
+            label.Visibility = DebugMode ? Visibility.Visible : Visibility.Hidden;
+            SubWindow.label.Visibility = DebugMode ? Visibility.Visible : Visibility.Hidden;
         }
 
         private void Logo(string msg)
         {
             var path = @"D:\Projects\C#_Proj\Нижний - Проект Очередь\Sensor\logo.txt";
-            File.AppendAllText(path, msg + "\r\n");
+            File.AppendAllText(path,DateTime.Now.ToString() + " --- " +  msg + "\r\n");
         }
     }
 }

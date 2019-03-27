@@ -1,3 +1,170 @@
-!RoomSensor && !WaitFree && SelectVideo
-RoomEmptyTimerTick
-RoomEmptyTimerTick - WaitFree && SelectVideo
+3/27/2019 11:41:19 AM --- !RoomSensor && !WaitFree && SelectVideo
+3/27/2019 11:41:44 AM --- FlatSensor && SelectVideo  && !WaitPeople && !WaitFree
+3/27/2019 11:41:45 AM --- RoomSensor && SelectVideo && WaitPeople && !WaitFree && !string.IsNullOrWhiteSpace(SelectedVideo)
+3/27/2019 11:41:45 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:45 AM --- FlatSensor && SelectVideo && PlayingVideo && !WaitPeople && !WaitFree
+3/27/2019 11:41:45 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:46 AM --- FlatSensor && SelectVideo  && !WaitPeople && !WaitFree
+3/27/2019 11:41:46 AM --- RoomSensor && WaitFree && SelectVideo && PlayingVideo
+3/27/2019 11:41:46 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:46 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:46 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:46 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:47 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:47 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:47 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:47 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:48 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:48 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:48 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:48 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:49 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:49 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:50 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:50 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:50 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:50 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:51 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:51 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:51 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:51 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:52 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:52 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:52 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:52 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:53 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:53 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:54 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:54 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:54 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:54 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:55 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:55 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:55 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:55 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:56 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:56 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:56 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:56 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:57 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:57 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:57 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:57 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:58 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:58 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:59 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:59 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:59 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:41:59 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:00 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:00 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:00 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:00 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:01 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:01 AM --- !RoomSensor && !WaitFree && SelectVideo
+3/27/2019 11:42:05 AM --- RoomSensor && WaitFree && SelectVideo && PlayingVideo
+3/27/2019 11:42:05 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:06 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:06 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:07 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:07 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:08 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:08 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:09 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:09 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:10 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:10 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:11 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:12 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:12 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:13 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:13 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:14 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:14 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:15 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:15 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:16 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:16 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:17 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:18 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:18 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:19 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:19 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:20 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:20 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:42:21 AM --- !RoomSensor && !WaitFree && SelectVideo
+3/27/2019 11:43:36 AM --- RoomSensor && WaitFree && SelectVideo && PlayingVideo
+3/27/2019 11:43:36 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:36 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:37 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:37 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:38 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:38 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:38 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:38 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:39 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:39 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:39 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:39 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:40 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:40 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:40 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:40 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:41 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:41 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:41 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:41 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:42 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:42 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:42 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:42 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:43 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:43 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:44 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:44 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:44 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:44 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:45 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:45 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:45 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:45 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:46 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:46 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:46 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:46 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:47 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:47 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:47 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:47 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:48 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:48 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:48 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:48 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:49 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:49 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:49 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:49 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:50 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:50 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:51 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:51 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:51 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:51 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:52 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:52 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:52 AM --- RoomSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:52 AM --- FlatSensor && SelectVideo && PlayingVideo
+3/27/2019 11:43:53 AM --- !RoomSensor && !WaitFree && SelectVideo
+3/27/2019 11:44:12 AM --- RoomEmptyTimerTick
+3/27/2019 11:44:12 AM --- RoomEmptyTimerTick - WaitFree && SelectVideo
+3/27/2019 11:44:32 AM --- RoomEmptyTimerTick
+3/27/2019 11:44:52 AM --- RoomEmptyTimerTick
+3/27/2019 11:45:12 AM --- RoomEmptyTimerTick
+3/27/2019 11:45:32 AM --- RoomEmptyTimerTick
+3/27/2019 11:45:52 AM --- RoomEmptyTimerTick
+3/27/2019 11:46:12 AM --- RoomEmptyTimerTick
+3/27/2019 11:46:33 AM --- RoomEmptyTimerTick
+3/27/2019 11:46:53 AM --- RoomEmptyTimerTick
+3/27/2019 11:47:13 AM --- RoomEmptyTimerTick
+3/27/2019 11:47:33 AM --- RoomEmptyTimerTick
+3/27/2019 11:47:53 AM --- RoomEmptyTimerTick

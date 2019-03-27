@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="Video" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
-        <WindowsFormsHost x:Name="WinFormsHost" HorizontalAlignment="Left" Margin="1,1,0,0" VerticalAlignment="Top"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <WindowsFormsHost x:Name="WinFormsHost" HorizontalAlignment="Left" Margin="1,1,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Label x:Name="label" Content="Label" Margin="10,10,9.6,0" VerticalAlignment="Top" Height="135" FontSize="72" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

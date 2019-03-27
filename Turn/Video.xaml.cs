@@ -49,7 +49,7 @@ namespace Turn
                 VLСControl = new AxVLCPlugin2();
                 WinFormsHost.Child = VLСControl;
 
-                //VLСControl.Dock = System.Windows.Forms.DockStyle.Fill;
+                VLСControl.Dock = System.Windows.Forms.DockStyle.Fill;
             }
             catch (Exception ex)
             {
@@ -69,7 +69,7 @@ namespace Turn
             var convertedURI = uri.AbsoluteUri;
 
             VLСControl.playlist.add(convertedURI, null, null);
-            //VLСControl.AutoLoop = true;
+            VLСControl.AutoLoop = true;
             VLСControl.playlist.play();
         }
 
