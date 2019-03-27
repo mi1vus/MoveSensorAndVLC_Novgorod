@@ -35,6 +35,7 @@ namespace Turn
         DispatcherTimer ExitTimer = new DispatcherTimer();
 
         bool DebugMode = false;
+        string Dir = @"C:\";// @"D:\Projects\C#_Proj\Нижний - Проект Очередь\Sensor\";
 
         // Порт
         string buff = "";
@@ -61,10 +62,10 @@ namespace Turn
                 InitializeComponent();
 
                 //System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;  //ОЧЕНЬ СПОРНОЕ РЕШЕНИЕ !!!!!!!!!!
-                if (File.Exists(@"D:\Projects\C#_Proj\Нижний - Проект Очередь\Sensor\logo.txt"))
-                    File.Delete(@"D:\Projects\C#_Proj\Нижний - Проект Очередь\Sensor\logo.txt");
+                if (File.Exists(Dir + "logo.txt"))
+                    File.Delete(Dir + "logo.txt");
 
-                var pars = File.ReadAllText(@"D:\Projects\C#_Proj\Нижний - Проект Очередь\Sensor\settings.txt");
+                var pars = File.ReadAllText(Dir + "settings.txt");
                 var port = pars.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).First(t => t.StartsWith("port"))
                     .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1];
                 com = new SerialPort(port, 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One);
@@ -77,7 +78,7 @@ namespace Turn
                 DebugMode = bool.Parse(pars.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).First(t => t.StartsWith("debug"))
                     .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
 
-                var list = File.ReadAllText(@"D:\Projects\C#_Proj\Нижний - Проект Очередь\Sensor\list.txt");
+                var list = File.ReadAllText(Dir + "list.txt");
                 var lines = list.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var line in lines)
                 {
@@ -326,7 +327,7 @@ namespace Turn
 
         private void Logo(string msg)
         {
-            var path = @"D:\Projects\C#_Proj\Нижний - Проект Очередь\Sensor\logo.txt";
+            var path = Dir + "logo.txt";
             File.AppendAllText(path,DateTime.Now.ToString() + " --- " +  msg + "\r\n");
         }
     }

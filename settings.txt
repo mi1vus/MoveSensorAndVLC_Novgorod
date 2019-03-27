@@ -1,4 +1,0 @@
-port COM8
-wait 90
-down 20
-debug true
