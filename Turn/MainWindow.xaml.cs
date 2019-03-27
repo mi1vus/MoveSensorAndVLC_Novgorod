@@ -161,7 +161,7 @@ namespace Turn
             if (FlatSensor && SelectVideo  && !WaitPeople)
             {
                 WaitPeople = true;
-                Logo("FlatSensor && SelectVideo  && !WaitPeople && !WaitFree");
+                Logo("FlatSensor && SelectVideo  && !WaitPeople");
             }
 
             if (RoomSensor && SelectVideo && WaitPeople && !PlayingVideo && !string.IsNullOrWhiteSpace(SelectedVideo))
@@ -172,30 +172,7 @@ namespace Turn
                 WaitFree = false;
                 GoUpMessage.Visibility = Visibility.Hidden;
                 NotEmptyMessage.Visibility = Visibility.Visible;
-                Logo("RoomSensor && SelectVideo && WaitPeople && !WaitFree && !string.IsNullOrWhiteSpace(SelectedVideo)");
-            }
-
-            if (RoomSensor && WaitFree && SelectVideo && PlayingVideo)
-            {
-                WaitFree = false;
-                RoomEmptyTimer.Stop();
-                RoomEmptyTimer = new DispatcherTimer();
-                // Задаем интервал таймеру
-                RoomEmptyTimer.Interval = new TimeSpan(0, 0, 0, WaitTime, 0);
-                // Подписываемся на тики таймера
-                RoomEmptyTimer.Tick += new EventHandler(RoomEmptyTimerTick);
-                Logo("RoomSensor && WaitFree && SelectVideo && PlayingVideo");
-            }
-
-            if (RoomSensor && SelectVideo && PlayingVideo)
-            {
-                ExitTimer.Stop();
-                ExitTimer = new DispatcherTimer();
-                // Задаем интервал таймеру
-                ExitTimer.Interval = new TimeSpan(0, 0, 0, ExitTime, 0);
-                // Подписываемся на тики таймера
-                ExitTimer.Tick += new EventHandler(RoomEmptyTimerTick);
-                Logo("RoomSensor && SelectVideo && PlayingVideo");
+                Logo("RoomSensor && SelectVideo && WaitPeople && !PlayingVideo && !string.IsNullOrWhiteSpace(SelectedVideo)");
             }
 
             if (!RoomSensor && !WaitFree && SelectVideo)
@@ -205,15 +182,29 @@ namespace Turn
                 Logo("!RoomSensor && !WaitFree && SelectVideo");
             }
 
-            if (FlatSensor && SelectVideo && PlayingVideo && !WaitPeople && !WaitFree)
+            if (RoomSensor && WaitFree && SelectVideo)
             {
-                WaitFree = true;
-                RoomEmptyTimer.Start();
-                Logo("FlatSensor && SelectVideo && PlayingVideo && !WaitPeople && !WaitFree");
+                WaitFree = false;
+                RoomEmptyTimer.Stop();
+                RoomEmptyTimer = new DispatcherTimer();
+                // Задаем интервал таймеру
+                RoomEmptyTimer.Interval = new TimeSpan(0, 0, 0, WaitTime, 0);
+                // Подписываемся на тики таймера
+                RoomEmptyTimer.Tick += new EventHandler(RoomEmptyTimerTick);
+
+                ExitTimer.Stop();
+                ExitTimer = new DispatcherTimer();
+                // Задаем интервал таймеру
+                ExitTimer.Interval = new TimeSpan(0, 0, 0, ExitTime, 0);
+                // Подписываемся на тики таймера
+                ExitTimer.Tick += new EventHandler(RoomEmptyTimerTick);
+
+                Logo("RoomSensor && WaitFree && SelectVideo");
             }
 
             if (FlatSensor && SelectVideo && PlayingVideo)
             {
+                WaitFree = true;
                 ExitTimer.Start();
                 Logo("FlatSensor && SelectVideo && PlayingVideo");
             }
@@ -226,8 +217,7 @@ namespace Turn
 
         private void RoomEmptyTimerTick(object sender, EventArgs e)
         {
-            Logo("RoomEmptyTimerTick");
-            if (SelectVideo)
+            if (true)
             {
                 WaitFree = false;
                 RoomEmptyTimer.Stop();
@@ -246,7 +236,8 @@ namespace Turn
 
                 GoUpMessage.Visibility = Visibility.Hidden;
                 NotEmptyMessage.Visibility = Visibility.Hidden;
-                Logo("RoomEmptyTimerTick - WaitFree && SelectVideo");
+                Logo("RoomEmptyTimerTick");
+                //Logo("RoomEmptyTimerTick - WaitFree && SelectVideo");
             }
 
             //// Чето посылаем
