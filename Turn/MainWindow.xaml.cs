@@ -35,7 +35,7 @@ namespace Turn
         DispatcherTimer ExitTimer = new DispatcherTimer();
 
         bool DebugMode = false;
-        string Dir = @"C:\";// @"D:\Projects\C#_Proj\Нижний - Проект Очередь\Sensor\";
+        string Dir = @"";// @"D:\Projects\C#_Proj\Нижний - Проект Очередь\Sensor\";
 
         // Порт
         string buff = "";
@@ -288,10 +288,13 @@ namespace Turn
         private void mainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             SubWindow = new Video();
+            SubWindow.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            //.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
             SubWindow.Show();
 
             var green = new Color { R = 141, G = 199, B = 63, A = 255 };
             var white = new Color { R = 255, G = 255, B = 255, A = 255 };
+            var red = new Color { R = 243, G = 4, B = 4, A = 255 };
 
             double margin = 5d;
 
@@ -312,7 +315,7 @@ namespace Turn
             NotEmptyMessage.Height = (int)(wrapPanel.ActualHeight);
             NotEmptyMessage.BorderThickness = new Thickness(0);
             NotEmptyMessage.BorderBrush = null;
-            NotEmptyMessage.Background = new SolidColorBrush(green);
+            NotEmptyMessage.Background = new SolidColorBrush(red);
             NotEmptyMessage.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             NotEmptyMessage.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             NotEmptyMessage.FontSize = wrapPanel.ActualHeight / 4;
@@ -323,6 +326,8 @@ namespace Turn
 
             label.Visibility = DebugMode ? Visibility.Visible : Visibility.Hidden;
             SubWindow.label.Visibility = DebugMode ? Visibility.Visible : Visibility.Hidden;
+
+            //var a = System.Windows.SystemParameters.WorkArea;
         }
 
         private void Logo(string msg)
