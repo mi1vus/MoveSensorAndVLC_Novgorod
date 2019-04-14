@@ -13,6 +13,8 @@
         <WrapPanel x:Name="wrapPanel" Margin="150" SizeChanged="wrapPanel_SizeChanged">
         </WrapPanel>
         <Label x:Name="label" Content="Label" Margin="15,10,10,623" FontSize="72"/>
+        <CheckBox x:Name="checkBox2" Content="CheckBox2" Margin="100,0,822,748" Checked="checkBox2_Checked" Unchecked="checkBox2_Unchecked"/>
+        <CheckBox x:Name="checkBox1" Content="CheckBox1" Checked="checkBox1_Checked" Unchecked="checkBox1_Unchecked" Margin="0,0,929,748"/>
         <Button x:Name="GoUpMessage" Content="Пройдите пожалуйста наверх!" Height="251" Width="312" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="356,407,356,110"/>
         <Button x:Name="NotEmptyMessage" Content="Занято, ожидайте!" HorizontalAlignment="Left" Margin="356,150,0,0" VerticalAlignment="Top" Width="312" Height="252"/>
     </Grid>

@@ -59,7 +59,9 @@ namespace Turn
 
         public void PlayVideo(string path)
         {
+//#if COM
             VLСControl.video.toggleFullscreen();
+//#endif            
             if (VLСControl.playlist.isPlaying)
                 VLСControl.playlist.stop();
             VLСControl.playlist.items.clear();

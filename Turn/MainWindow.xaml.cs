@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define COM
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,14 +19,36 @@ using System.IO;
 using System.Windows.Threading;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+ 
 
 namespace Turn
 {
+    public enum State
+    {
+        EmptyRoom = 1,
+        PeopleUpOnFloor,
+        PlayingVideo,
+        PeopleDownToFlore,
+    }
+    
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+        /// Interaction logic for MainWindow.xaml
+        /// </summary>
     public partial class MainWindow : Window
     {
+        [DllImport("User32.Dll")]
+        public static extern long SetCursorPos(int x, int y);
+
+        [DllImport("User32.Dll")]
+        public static extern bool ClientToScreen(IntPtr hWnd, ref POINT point);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public int x;
+            public int y;
+        }
+        
         // Таймер
         DispatcherTimer SensorUpdateTimer = new DispatcherTimer();
         // Таймер
@@ -39,15 +63,44 @@ namespace Turn
 
         // Порт
         string buff = "";
-        bool PlayingVideo = false;
-        bool SelectVideo = false;
-        bool WaitPeople = false;
-        bool WaitFree = false;
+        State RoomState;
+        bool RoomEmptyTimerStarted = false;
+        bool FirstFlat = false;
+        //bool WaitPeople = false;
+        //bool WaitFree = false;
         string SelectedVideo = "";
-        bool FlatSensor = false;
-        bool RoomSensor = false;
+        private bool _FlatSensor = false;
+        private bool _RoomSensor = false;
 
+        public bool FlatSensor
+        {
+            get { return _FlatSensor; }
+            set
+            {
+                if (value != _FlatSensor)
+                {
+                    Logo("FlatSensor = " + value.ToString());
+                    _FlatSensor = value;
+                }
+            }
+        }
+
+        public bool RoomSensor
+        {
+            get { return _RoomSensor; }
+            set
+            {
+                if (value != _RoomSensor)
+                {
+                    Logo("RoomSensor = " + value.ToString());
+                    _RoomSensor = value;
+                }
+            }
+        }
+
+#if COM
         SerialPort com;
+#endif
         object lockObj = new object();
         String indata = "";
 
@@ -68,7 +121,9 @@ namespace Turn
                 var pars = File.ReadAllText(Dir + "settings.txt");
                 var port = pars.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).First(t => t.StartsWith("port"))
                     .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1];
+#if COM
                 com = new SerialPort(port, 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One);
+#endif
 
                 WaitTime = int.Parse(pars.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).First(t => t.StartsWith("wait"))
                     .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
@@ -91,7 +146,9 @@ namespace Turn
                 //PaintButtons();
 
                 // Подписались на приход данных
+#if COM
                 com.DataReceived += new SerialDataReceivedEventHandler(port_DataReceived);
+#endif
 
                 // Задаем интервал таймеру
                 SensorUpdateTimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
@@ -110,7 +167,10 @@ namespace Turn
                 // Подписываемся на тики таймера
                 ExitTimer.Tick += new EventHandler(RoomEmptyTimerTick);
 
+#if COM
                 com.Open();
+#endif                
+                RoomState = State.EmptyRoom;
             }
             catch (Exception ex)
             {
@@ -147,6 +207,7 @@ namespace Turn
 
         private void SensorUpdateTimerTick(object sender, EventArgs e)
         {
+#if COM
             lock (lockObj)
             {
                 var pairs = buff.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -158,34 +219,41 @@ namespace Turn
 
                 buff = pairs[pairs.Length - 1];
             }
+#endif
 
-            if (FlatSensor && SelectVideo  && !WaitPeople)
+            // На лесенке появился зритель
+            if (FlatSensor && !string.IsNullOrWhiteSpace(SelectedVideo) && RoomState == State.EmptyRoom)
             {
-                WaitPeople = true;
-                Logo("FlatSensor && SelectVideo  && !WaitPeople");
+                FirstFlat = true;
+                RoomState = State.PeopleUpOnFloor;
+                Logo("FlatSensor && !string.IsNullOrWhiteSpace(SelectedVideo) && RoomState == State.EmptyRoom");
             }
-
-            if (RoomSensor && SelectVideo && WaitPeople && !PlayingVideo && !string.IsNullOrWhiteSpace(SelectedVideo))
+            //зритель вошел в комнату
+            if (RoomSensor && !string.IsNullOrWhiteSpace(SelectedVideo) && RoomState == State.PeopleUpOnFloor)
             {
                 SubWindow.PlayVideo(SelectedVideo);
-                PlayingVideo = true;
-                WaitPeople = false;
-                WaitFree = false;
+                RoomState = State.PlayingVideo;
                 GoUpMessage.Visibility = Visibility.Hidden;
                 NotEmptyMessage.Visibility = Visibility.Visible;
-                Logo("RoomSensor && SelectVideo && WaitPeople && !PlayingVideo && !string.IsNullOrWhiteSpace(SelectedVideo)");
+                Logo("RoomSensor && !string.IsNullOrWhiteSpace(SelectedVideo) && RoomState == State.PeopleUpOnFloor");
             }
-
-            if (!RoomSensor && !WaitFree && SelectVideo)
+            //зритель поднялся и освободил лесенку
+            if (!FlatSensor && FirstFlat)
             {
-                WaitFree = true;
+                FirstFlat = false;
+                Logo("!FlatSensor && FirstFlat");
+            }
+            //в комнате нет движения
+            if (!RoomSensor && !string.IsNullOrWhiteSpace(SelectedVideo) && RoomState == State.PlayingVideo && !RoomEmptyTimerStarted)
+            {
+                RoomEmptyTimerStarted = true;
                 RoomEmptyTimer.Start();
-                Logo("!RoomSensor && !WaitFree && SelectVideo");
+                Logo("!RoomSensor && !string.IsNullOrWhiteSpace(SelectedVideo) && RoomState == State.PlayingVideo && !RoomEmptyTimerStarted");
             }
-
-            if (RoomSensor && WaitFree && SelectVideo)
+            //зрители продолжают находиться в комнате
+            if (RoomSensor && RoomState == State.PlayingVideo && RoomEmptyTimerStarted)
             {
-                WaitFree = false;
+                RoomEmptyTimerStarted = false;
                 RoomEmptyTimer.Stop();
                 RoomEmptyTimer = new DispatcherTimer();
                 // Задаем интервал таймеру
@@ -200,15 +268,17 @@ namespace Turn
                 // Подписываемся на тики таймера
                 ExitTimer.Tick += new EventHandler(RoomEmptyTimerTick);
 
-                Logo("RoomSensor && WaitFree && SelectVideo");
+                Logo("RoomSensor && RoomState == State.PlayingVideo && RoomEmptyTimerStarted");
+            }
+            //зрители пытаются выйти
+            if (!FirstFlat && FlatSensor && RoomState == State.PlayingVideo)
+            {
+                RoomState = State.PeopleDownToFlore;
+                ExitTimer.Start();
+                Logo("FlatSensor && RoomState == State.PlayingVideo");
             }
 
-            if (FlatSensor && SelectVideo && PlayingVideo)
-            {
-                WaitFree = true;
-                ExitTimer.Start();
-                Logo("FlatSensor && SelectVideo && PlayingVideo");
-            }
+            
 
             label.Content = (FlatSensor ? "1" : "0") + " " + (RoomSensor ? "1" : "0");
             SubWindow.label.Content = (FlatSensor ? "1" : "0") + " " + (RoomSensor ? "1" : "0");
@@ -218,9 +288,9 @@ namespace Turn
 
         private void RoomEmptyTimerTick(object sender, EventArgs e)
         {
-            if (true)
+            if (true/*RoomState != State.EmptyRoom*/)
             {
-                WaitFree = false;
+                //WaitFree = false;
                 RoomEmptyTimer.Stop();
                 RoomEmptyTimer = new DispatcherTimer();
                 // Задаем интервал таймеру
@@ -228,12 +298,18 @@ namespace Turn
                 // Подписываемся на тики таймера
                 RoomEmptyTimer.Tick += new EventHandler(RoomEmptyTimerTick);
 
+                ExitTimer.Stop();
+                ExitTimer = new DispatcherTimer();
+                // Задаем интервал таймеру
+                ExitTimer.Interval = new TimeSpan(0, 0, 0, ExitTime, 0);
+                // Подписываемся на тики таймера
+                ExitTimer.Tick += new EventHandler(RoomEmptyTimerTick);
+
                 SubWindow.StopVideo();
-                PlayingVideo = false;
-                SelectVideo = false;
-                WaitPeople = false;
-                WaitFree = false;
-                SelectedVideo = "";
+                RoomState = State.EmptyRoom;
+                RoomEmptyTimerStarted = false;
+                FirstFlat = false;
+                SelectedVideo = null;
 
                 GoUpMessage.Visibility = Visibility.Hidden;
                 NotEmptyMessage.Visibility = Visibility.Hidden;
@@ -252,9 +328,10 @@ namespace Turn
             {
                 //System.Threading.Thread.Sleep(10);
                 // Получаем пришедшие данные
-                indata = com.ReadExisting();
-
+#if COM
+                 indata = com.ReadExisting();
                 buff += indata;
+#endif
             }
         }
 
@@ -274,21 +351,34 @@ namespace Turn
             string path = (string)(sender as Button)?.DataContext;
             //SubWindow.PlayVideo(path);
             SelectedVideo = path;
-            SelectVideo = true;
             GoUpMessage.Visibility = Visibility.Visible;
+
+            RoomEmptyTimerStarted = true;
+            RoomEmptyTimer.Start();
+            Logo("button_Click");
+
+            POINT p = new POINT();
+            p.x = Convert.ToInt16("0");
+            p.y = Convert.ToInt16("0");
+
+            ////ClientToScreen(this.h Handle, ref p);
+            SetCursorPos(p.x, p.y);
+            label.Focus();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             // Закрываем порт
+#if COM
             if (com.IsOpen)
-                com.Close();
+            com.Close();
+#endif
         }
 
         private void mainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             SubWindow = new Video();
-            SubWindow.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            //SubWindow.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             //.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
             SubWindow.Show();
 
@@ -308,7 +398,7 @@ namespace Turn
             GoUpMessage.FontSize = wrapPanel.ActualHeight / 4;
             GoUpMessage.Foreground = new SolidColorBrush(white);
             GoUpMessage.Margin = new Thickness(margin);
-            GoUpMessage.Content = new TextBlock() { Text = "Пройдите пожалуйста наверх!", TextWrapping = TextWrapping.Wrap, TextAlignment = TextAlignment.Center };
+            GoUpMessage.Content = new TextBlock() { Text = "Пройдите, пожалуйста, наверх!", TextWrapping = TextWrapping.Wrap, TextAlignment = TextAlignment.Center };
             GoUpMessage.Visibility = Visibility.Hidden;
 
             NotEmptyMessage.Width = (int)(wrapPanel.ActualWidth);
@@ -326,14 +416,62 @@ namespace Turn
 
             label.Visibility = DebugMode ? Visibility.Visible : Visibility.Hidden;
             SubWindow.label.Visibility = DebugMode ? Visibility.Visible : Visibility.Hidden;
+            checkBox1.Visibility = DebugMode ? Visibility.Visible : Visibility.Hidden;
+            checkBox2.Visibility = DebugMode ? Visibility.Visible : Visibility.Hidden;
 
             //var a = System.Windows.SystemParameters.WorkArea;
+        }
+
+        private void unclicked_Click(object sender, RoutedEventArgs e)
+        {
+            //string path = (string)(sender as Button)?.DataContext;
+            ////SubWindow.PlayVideo(path);
+            //SelectedVideo = path;
+            //SelectVideo = true;
+            //GoUpMessage.Visibility = Visibility.Visible;
+
+            POINT p = new POINT();
+            p.x = Convert.ToInt16("0");
+            p.y = Convert.ToInt16("0");
+
+            ////ClientToScreen(this.h Handle, ref p);
+            SetCursorPos(p.x, p.y);
+            label.Focus();
+            //GoUpMessage.
+            //Cursor.Position = new Point(400, 700);
+                        ////var a = System.Windows.SystemParameters.WorkArea;
+            ////Создание объекта для генерации чисел
+            //Random rnd = new Random();
+
+            ////Получить очередное (в данном случае - первое) случайное число
+            //int value = rnd.Next() % Buttons.Count;
+            //SubWindow.PlayVideo(path/*Buttons[value].Item2*/);
         }
 
         private void Logo(string msg)
         {
             var path = Dir + "logo.txt";
             File.AppendAllText(path,DateTime.Now.ToString() + " --- " +  msg + "\r\n");
+        }
+
+        private void checkBox1_Checked(object sender, RoutedEventArgs e)
+        {
+            FlatSensor = true;
+        }
+
+        private void checkBox1_Unchecked(object sender, RoutedEventArgs e)
+        {
+            FlatSensor = false;
+        }
+
+        private void checkBox2_Checked(object sender, RoutedEventArgs e)
+        {
+            RoomSensor = true;
+        }
+
+        private void checkBox2_Unchecked(object sender, RoutedEventArgs e)
+        {
+            RoomSensor = false;
         }
     }
 }
